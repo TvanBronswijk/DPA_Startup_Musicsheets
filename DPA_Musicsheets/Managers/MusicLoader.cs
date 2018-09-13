@@ -17,7 +17,17 @@ namespace DPA_Musicsheets.Managers
             throw new NotImplementedException();
         }
 
-        public void LilyPondTextChanged(string text) => LilypondLoaded.Invoke(this, text);
+        public void LilyPondTextChanged(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Convert()
+        {
+            LilypondLoaded.Invoke(this, null);
+            WPFLoaded.Invoke(this, null);
+            MidiLoaded.Invoke(this, null);
+        }
 
         public event EventHandler<string> LilypondLoaded;
         public event EventHandler<List<MusicalSymbol>> WPFLoaded;
