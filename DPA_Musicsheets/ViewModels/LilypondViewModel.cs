@@ -43,18 +43,16 @@ namespace DPA_Musicsheets.ViewModels
 
         private bool _textChangedByLoad = false;
         private DateTime _lastChange;
-        private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
+        private const int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private bool _waitingForRender = false;
 
         public LilypondViewModel(MainViewModel mainViewModel, MusicLoader musicLoader)
         {
-            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer and viewmodels don't know each other?
-            // And viewmodels don't 
             _mainViewModel = mainViewModel;
             _musicLoader = musicLoader;
-            _musicLoader.LilypondViewModel = this;
-            
             _text = "Your lilypond text will appear here.";
+
+            musicLoader.LilypondLoaded += (_, args) => LilypondTextLoaded(args);
         }
 
         public void LilypondTextLoaded(string text)
@@ -84,7 +82,7 @@ namespace DPA_Musicsheets.ViewModels
                         _waitingForRender = false;
                         UndoCommand.RaiseCanExecuteChanged();
 
-                        _musicLoader.LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
+                        _musicLoader.LilyPondTextChanged(LilypondText);
                         _mainViewModel.CurrentState = "";
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
@@ -115,19 +113,7 @@ namespace DPA_Musicsheets.ViewModels
             if (saveFileDialog.ShowDialog() == true)
             {
                 string extension = Path.GetExtension(saveFileDialog.FileName);
-                if (extension.EndsWith(".mid"))
-                {
-                    _musicLoader.SaveToMidi(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".ly"))
-                {
-                    _musicLoader.SaveToLilypond(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".pdf"))
-                {
-                    _musicLoader.SaveToPDF(saveFileDialog.FileName);
-                }
-                else
+                if(!_musicLoader.SaveFile(saveFileDialog.FileName))
                 {
                     MessageBox.Show($"Extension {extension} is not supported.");
                 }

@@ -1,17 +1,8 @@
 ﻿using DPA_Musicsheets.Managers;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using PSAMControlLibrary;
-using PSAMWPFControlLibrary;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -26,9 +17,9 @@ namespace DPA_Musicsheets.ViewModels
         /// <param name="musicLoader">We need the musicloader so it can set our staffs.</param>
         public StaffsViewModel(MusicLoader musicLoader)
         {
-            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer?
-            musicLoader.StaffsViewModel = this;
             Staffs = new ObservableCollection<MusicalSymbol>();
+
+            musicLoader.WPFLoaded += (_, args) => SetStaffs(args);
         }
 
         /// <summary>
