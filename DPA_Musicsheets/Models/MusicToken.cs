@@ -20,7 +20,9 @@ namespace DPA_Musicsheets.Models
         public bool InRepeat => (TokenKind != Kind.SectionEnd && TokenKind != Kind.Alternative && TokenKind == Kind.Repeat) 
                                 || PreviousToken.InRepeat;
 
-        public bool InAlternative => false;
+        public bool InAlternative => (TokenKind != Kind.SectionEnd && TokenKind == Kind.Alternative)
+                                || PreviousToken.InAlternative;
+                            
 
         public int AlternativeRepeatNumber => (InAlternative && PreviousToken.AlternativeRepeatNumber == 1 ? 1 : 0) +
                                               PreviousToken.AlternativeRepeatNumber;
