@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +13,15 @@ namespace DPA_Musicsheets.Models
         public string Value { get; set; }
 
         public MusicToken NextToken { get; set; }
-
         public MusicToken PreviousToken { get; set; }
+
+        public bool InRepeat => (TokenKind != Kind.SectionEnd && TokenKind != Kind.Alternative && TokenKind == Kind.Repeat) 
+                                || PreviousToken.InRepeat;
+
+        public bool InAlternative => false;
+
+        public int AlternativeRepeatNumber => (InAlternative && PreviousToken.AlternativeRepeatNumber == 1 ? 1 : 0) +
+                                              PreviousToken.AlternativeRepeatNumber;
 
         /// <summary>
         /// This can be used to print our list and quickly see what it contains.
