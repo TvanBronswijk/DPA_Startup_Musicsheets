@@ -86,17 +86,14 @@ namespace DPA_Musicsheets.Converters.Strategy
             return lilypondText.ToString();
         }
 
-        public Sequence OpenFile(string fileName)
+        public string OpenFile(string fileName)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var line in File.ReadAllLines(fileName))
             {
                 sb.AppendLine(line);
             }
-
-            //this.LilypondText = sb.ToString();
-            //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
-            return null;
+            return sb.ToString();
         }
 
         public void SaveFile(string fileName)

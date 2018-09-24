@@ -2,14 +2,33 @@
 using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
+using DPA_Musicsheets.Converters.Strategy;
 
 namespace DPA_Musicsheets.Managers
 {
     public class MusicLoader
     {
+        private LilypondConverter _lilypondConverter;
+        private MidiConverter _midiConverter;
+        private WPFConverter _wpfConverter;
+        
+        
         public void OpenFile(string fileName)
         {
-            throw new NotImplementedException();
+            if (fileName.EndsWith(".mid"))
+            {
+                var file = _midiConverter.OpenFile(fileName);
+                MidiLoaded.Invoke(this, file);
+
+
+                var tokens = _midiConverter.Convert(file);
+                LilypondLoaded.Invoke(this, _lilypondConverter.Convert(tokens));
+                WPFLoaded.Invoke(this, _wpfConverter.Convert(tokens));
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         internal bool SaveFile(string fileName)

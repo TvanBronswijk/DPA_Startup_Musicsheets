@@ -106,7 +106,7 @@ namespace DPA_Musicsheets.Converters.Strategy
             return symbols;
         }
 
-        public Sequence OpenFile(string fileName)
+        public List<MusicalSymbol> OpenFile(string fileName)
         {
             throw new NotImplementedException();
         }

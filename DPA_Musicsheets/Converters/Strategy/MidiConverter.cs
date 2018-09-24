@@ -133,9 +133,6 @@ namespace DPA_Musicsheets.Converters.Strategy
             MidiSequence.Load(fileName);
 
             return MidiSequence;
-            //needs to be done
-            //this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
-            //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
         }
 
         public void SaveFile(string fileName)
