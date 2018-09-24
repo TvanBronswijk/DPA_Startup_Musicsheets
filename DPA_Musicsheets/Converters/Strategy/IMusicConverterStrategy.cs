@@ -1,5 +1,6 @@
 ﻿using DPA_Musicsheets.Models;
 using System.Collections.Generic;
+using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
@@ -7,5 +8,8 @@ namespace DPA_Musicsheets.Converters.Strategy
     {
         IEnumerable<MusicToken> Convert(T src);
         T Convert(IEnumerable<MusicToken> tokens);
+        Sequence OpenFile(string fileName);
+        void SaveFile(string fileName);
+
     }
 }
