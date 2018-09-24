@@ -93,11 +93,11 @@ namespace DPA_Musicsheets.Converters.Strategy
                 switch (musicalSymbol.TokenKind)
                 {
                     case MusicToken.Kind.Note:
-                        Note note = musicalSymbol as Note;
+                        var note = musicalSymbol;
 
                         // Calculate duration
-                        double absoluteLength = 1.0 / (double)note.Duration;
-                        absoluteLength += (absoluteLength / 2.0) * note.NumberOfDots;
+                        double absoluteLength = 1.0 / (double)note.Length;
+                        absoluteLength += (absoluteLength / 2.0) * note.Dots;
 
                         double relationToQuartNote = _beatNote / 4.0;
                         double percentageOfBeatNote = (1.0 / _beatNote) / absoluteLength;

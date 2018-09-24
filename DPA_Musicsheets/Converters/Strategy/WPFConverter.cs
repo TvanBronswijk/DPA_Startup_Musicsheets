@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Navigation;
+using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
@@ -45,20 +46,11 @@ namespace DPA_Musicsheets.Converters.Strategy
                     //if (lastNote != null) lastNote.TieType = NoteTieType.Start;
                     //musicToken.Value = musicToken.Value.Substring(1);
                 }
-
-                // Length
-                var noteLength = int.Parse(Regex.Match(musicToken.Value, @"\d+").Value);
                 
-                // Crosses and Moles
-                var alter = 0;
-                alter += Regex.Matches(musicToken.Value, "is").Count;
-                alter -= Regex.Matches(musicToken.Value, "es|as").Count;
-                
-
-                var note = new Note(musicToken.Value[0].ToString().ToUpper(), alter, musicToken.Octave,
-                    (MusicalSymbolDuration) noteLength, NoteStemDirection.Up, tie,
+                var note = new Note(musicToken.Step.ToUpper(), musicToken.Alter, musicToken.Octave,
+                    (MusicalSymbolDuration) musicToken.Length, NoteStemDirection.Up, tie,
                     new List<NoteBeamType>() {NoteBeamType.Single});
-                note.NumberOfDots += musicToken.Value.Count(c => c.Equals('.'));
+                note.NumberOfDots += musicToken.Dots;
 
                 return note;
             });
@@ -112,6 +104,16 @@ namespace DPA_Musicsheets.Converters.Strategy
             }
 
             return symbols;
+        }
+
+        public Sequence OpenFile(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveFile(string fileName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

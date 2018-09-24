@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models
@@ -59,6 +60,14 @@ namespace DPA_Musicsheets.Models
                 return value;
             }
         }
+
+        public string Step => Value[0].ToString();
+        public int Length => int.Parse(Regex.Match(Value, @"\d+").Value);
+        
+        public int Alter => Regex.Matches(Value, "is").Count - Regex.Matches(Value, "es|as").Count;
+
+        public int Dots => Value.Count(c => c.Equals('.'));
+            
 
         public MusicToken Previous(Kind tokenKind) =>
             PreviousToken.TokenKind == tokenKind ? PreviousToken : PreviousToken.Previous(tokenKind);
