@@ -68,17 +68,18 @@ namespace DPA_Musicsheets.Converters.Strategy
 
                 switch (musicalSymbol.TokenKind)
                 {
-                    case MusicToken.Kind.Staff: lilypondText.Append("\\relative " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.Clef: lilypondText.Append("\\clef " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.Time: lilypondText.Append("\\time " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.Tempo: lilypondText.Append("\\tempo " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.Repeat: lilypondText.Append("\\repeat " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.Alternative: lilypondText.Append("\\alternative " + musicalSymbol.Value); break;
-                    case MusicToken.Kind.SectionStart: lilypondText.Append("{"); break;
-                    case MusicToken.Kind.SectionEnd: lilypondText.Append("}"); break;
-                    case MusicToken.Kind.Bar: lilypondText.Append("|"); break;
-                    case MusicToken.Kind.Note: lilypondText.Append(musicalSymbol.Value); break;
-                    case MusicToken.Kind.Rest: lilypondText.Append(musicalSymbol.Value); break;
+                    case MusicToken.Kind.Staff: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Clef: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Time: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Tempo: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Repeat: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Alternative: lilypondText.Append(musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.SectionStart: lilypondText.Append("{\r\n"); break;
+                    case MusicToken.Kind.SectionEnd: lilypondText.Append(" }"); break;
+                    case MusicToken.Kind.Bar: lilypondText.Append("|" + "\r\n"); break;
+                    case MusicToken.Kind.Note: lilypondText.Append(musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Rest: lilypondText.Append(musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Unknown: lilypondText.Append(musicalSymbol.Value + "\r\n"); break;
                     default: break;
                 }
             }

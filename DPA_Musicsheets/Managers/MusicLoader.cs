@@ -8,9 +8,9 @@ namespace DPA_Musicsheets.Managers
 {
     public class MusicLoader
     {
-        private LilypondConverter _lilypondConverter;
-        private MidiConverter _midiConverter;
-        private WPFConverter _wpfConverter;
+        private LilypondConverter _lilypondConverter = new LilypondConverter();
+        private MidiConverter _midiConverter = new MidiConverter();
+        private WPFConverter _wpfConverter = new WPFConverter();
         
         
         public void OpenFile(string fileName)

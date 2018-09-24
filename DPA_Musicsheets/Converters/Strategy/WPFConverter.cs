@@ -92,9 +92,14 @@ namespace DPA_Musicsheets.Converters.Strategy
             MusicToken currentToken = tokens.First();
             while (currentToken != null)
             {
-                var newSymbol = _convertCommands[currentToken.TokenKind](currentToken);
-                if (newSymbol != null)
+               
+                if (_convertCommands.TryGetValue(currentToken.TokenKind, out var func))
+                {
+                    var newSymbol = func(currentToken);
+                    if(newSymbol != null)
                     symbols.Add(newSymbol);
+
+                }
 
                 if (currentToken.TokenKind == MusicToken.Kind.Alternative
                     || currentToken.TokenKind == MusicToken.Kind.Clef

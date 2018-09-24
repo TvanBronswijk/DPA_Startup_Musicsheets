@@ -20,6 +20,8 @@ namespace DPA_Musicsheets.Converters.Strategy
         public IEnumerable<MusicToken> Convert(Sequence src)
         {
             String lilyPondText = MidiToLilypond(src);
+            lilyPondText = lilyPondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
+
             //converting it to lilypondToken
             LinkedList<MusicToken> tokens = new LinkedList<MusicToken>();
 

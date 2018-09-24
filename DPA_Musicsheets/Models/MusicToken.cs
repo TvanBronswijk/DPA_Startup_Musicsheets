@@ -19,20 +19,20 @@ namespace DPA_Musicsheets.Models
         public MusicToken PreviousToken { get; set; }
 
         public bool InRepeat => (TokenKind != Kind.SectionEnd && TokenKind != Kind.Alternative && TokenKind == Kind.Repeat) 
-                                || PreviousToken.InRepeat;
+                                || (PreviousToken?.InRepeat ?? false);
 
         public bool InAlternative => (TokenKind != Kind.SectionEnd && TokenKind == Kind.Alternative)
-                                || PreviousToken.InAlternative;
+                                || (PreviousToken?.InAlternative ?? false);
                             
 
         public int AlternativeRepeatNumber => (InAlternative && PreviousToken.AlternativeRepeatNumber == 1 ? 1 : 0) +
-                                              PreviousToken.AlternativeRepeatNumber;
+                                              (PreviousToken?.AlternativeRepeatNumber ?? 0);
 
         public int Octave
         {
             get
             {
-                var previousNote = Previous(Kind.Note).Value[0];
+                var previousNote = Previous(Kind.Note)?.Value[0] ?? 'c';
                 var value = PreviousToken?.Octave ?? 4;
                 var distanceWithPreviousNote =
                     Notesorder.IndexOf(Value[0]) - Notesorder.IndexOf(previousNote);
@@ -70,7 +70,7 @@ namespace DPA_Musicsheets.Models
             
 
         public MusicToken Previous(Kind tokenKind) =>
-            PreviousToken.TokenKind == tokenKind ? PreviousToken : PreviousToken.Previous(tokenKind);
+            PreviousToken?.TokenKind == tokenKind ? PreviousToken : PreviousToken?.Previous(tokenKind);
 
         /// <summary>
         /// This can be used to print our list and quickly see what it contains.
