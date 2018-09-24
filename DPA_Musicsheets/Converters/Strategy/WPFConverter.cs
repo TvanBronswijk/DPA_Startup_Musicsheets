@@ -10,7 +10,7 @@ namespace DPA_Musicsheets.Converters.Strategy
 {
     class WPFConverter : IMusicConverterStrategy<List<MusicalSymbol>>
     {
-        private static List<char> _notesorder = new List<char> {'c', 'd', 'e', 'f', 'g', 'a', 'b'};
+        
         private readonly Dictionary<MusicToken.Kind, Func<MusicToken, MusicalSymbol>> _convertCommands;
 
         public WPFConverter()
@@ -34,9 +34,38 @@ namespace DPA_Musicsheets.Converters.Strategy
                     }
                     : null);
             _convertCommands.Add(MusicToken.Kind.Alternative, (musicToken) => null);
-            _convertCommands.Add(MusicToken.Kind.Note, (musicToken) => null /*TODO*/);
-            _convertCommands.Add(MusicToken.Kind.Rest, (musicToken) => new Rest((MusicalSymbolDuration)int.Parse(musicToken.Value[1].ToString())));
-            _convertCommands.Add(MusicToken.Kind.Bar, (musicToken) => new Barline { AlternateRepeatGroup = musicToken.AlternativeRepeatNumber });
+            _convertCommands.Add(MusicToken.Kind.Note, (musicToken) =>
+            {
+                // TODO: A tie, like a dot and cross or mole are decorations on notes. Is the DECORATOR pattern of use here?
+                NoteTieType tie = NoteTieType.None;
+                if (musicToken.Value.StartsWith("~"))
+                {
+                    //tie = NoteTieType.Stop;
+                    //var lastNote = symbols.Last(s => s is Note) as Note;
+                    //if (lastNote != null) lastNote.TieType = NoteTieType.Start;
+                    //musicToken.Value = musicToken.Value.Substring(1);
+                }
+
+                // Length
+                var noteLength = int.Parse(Regex.Match(musicToken.Value, @"\d+").Value);
+                
+                // Crosses and Moles
+                var alter = 0;
+                alter += Regex.Matches(musicToken.Value, "is").Count;
+                alter -= Regex.Matches(musicToken.Value, "es|as").Count;
+                
+
+                var note = new Note(musicToken.Value[0].ToString().ToUpper(), alter, musicToken.Octave,
+                    (MusicalSymbolDuration) noteLength, NoteStemDirection.Up, tie,
+                    new List<NoteBeamType>() {NoteBeamType.Single});
+                note.NumberOfDots += musicToken.Value.Count(c => c.Equals('.'));
+
+                return note;
+            });
+            _convertCommands.Add(MusicToken.Kind.Rest,
+                (musicToken) => new Rest((MusicalSymbolDuration) int.Parse(musicToken.Value[1].ToString())));
+            _convertCommands.Add(MusicToken.Kind.Bar,
+                (musicToken) => new Barline {AlternateRepeatGroup = musicToken.AlternativeRepeatNumber});
             _convertCommands.Add(MusicToken.Kind.Clef, (musicToken) =>
             {
                 musicToken = musicToken.NextToken;
@@ -71,10 +100,10 @@ namespace DPA_Musicsheets.Converters.Strategy
             MusicToken currentToken = tokens.First();
             while (currentToken != null)
             {
-                var newSymbol = _convertCommands[currentToken.TokenKind](currentToken);              
+                var newSymbol = _convertCommands[currentToken.TokenKind](currentToken);
                 if (newSymbol != null)
                     symbols.Add(newSymbol);
-                
+
                 if (currentToken.TokenKind == MusicToken.Kind.Alternative
                     || currentToken.TokenKind == MusicToken.Kind.Clef
                     || currentToken.TokenKind == MusicToken.Kind.Time)

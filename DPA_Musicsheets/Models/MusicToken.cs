@@ -9,6 +9,8 @@ namespace DPA_Musicsheets.Models
 {
     public class MusicToken
     {
+        public static List<char> Notesorder = new List<char> {'c', 'd', 'e', 'f', 'g', 'a', 'b'};
+        
         public Kind TokenKind { get; set; }
         public string Value { get; set; }
 
@@ -22,6 +24,42 @@ namespace DPA_Musicsheets.Models
 
         public int AlternativeRepeatNumber => (InAlternative && PreviousToken.AlternativeRepeatNumber == 1 ? 1 : 0) +
                                               PreviousToken.AlternativeRepeatNumber;
+
+        public int Octave
+        {
+            get
+            {
+                var previousNote = Previous(Kind.Note).Value[0];
+                var value = PreviousToken?.Octave ?? 4;
+                var distanceWithPreviousNote =
+                    Notesorder.IndexOf(Value[0]) - Notesorder.IndexOf(previousNote);
+                if (distanceWithPreviousNote > 3) // Shorter path possible the other way around
+                {
+                    distanceWithPreviousNote -= 7; // The number of notes in an octave
+                }
+                else if (distanceWithPreviousNote < -3)
+                {
+                    distanceWithPreviousNote += 7; // The number of notes in an octave
+                }
+
+                if (distanceWithPreviousNote + MusicToken.Notesorder.IndexOf(previousNote) >= 7)
+                {
+                    value++;
+                }
+                else if (distanceWithPreviousNote + MusicToken.Notesorder.IndexOf(previousNote) < 0)
+                {
+                    value--;
+                }
+
+                // Force up or down.
+                value += Value.Count(c => c == '\'');
+                value -= Value.Count(c => c == ',');
+                return value;
+            }
+        }
+
+        public MusicToken Previous(Kind tokenKind) =>
+            PreviousToken.TokenKind == tokenKind ? PreviousToken : PreviousToken.Previous(tokenKind);
 
         /// <summary>
         /// This can be used to print our list and quickly see what it contains.
