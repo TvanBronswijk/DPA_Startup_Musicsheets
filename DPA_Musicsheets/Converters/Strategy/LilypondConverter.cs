@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DPA_Musicsheets.Models;
-using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {

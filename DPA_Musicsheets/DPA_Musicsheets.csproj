@@ -102,10 +102,16 @@
     <Compile Include="Converters\Strategy\MidiConverter.cs" />
     <Compile Include="Converters\MusicConverter.cs" />
     <Compile Include="Converters\Strategy\WPFConverter.cs" />
+    <Compile Include="Models\Midi.cs" />
     <Compile Include="Services\FileIO.cs" />
     <Compile Include="Converters\Strategy\IMusicConverterStrategy.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\MusicToken.cs" />
+    <Compile Include="Strategy\Context.cs" />
+    <Compile Include="Strategy\Strategy.cs" />
+    <Compile Include="Strategy\StrategyChannel.cs" />
+    <Compile Include="Strategy\StrategyMeta.cs" />
+    <Compile Include="Strategy\StrategyTimeSignature.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />
     <Compile Include="ViewModels\StaffsViewModel.cs" />
     <Compile Include="Views\MidiPlayerCtrl.xaml.cs">
