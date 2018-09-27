@@ -45,11 +45,11 @@ namespace DPA_Musicsheets.Models
                     distanceWithPreviousNote += 7; // The number of notes in an octave
                 }
 
-                if (distanceWithPreviousNote + MusicToken.Notesorder.IndexOf(previousNote) >= 7)
+                if (distanceWithPreviousNote + Notesorder.IndexOf(previousNote) >= 7)
                 {
                     value++;
                 }
-                else if (distanceWithPreviousNote + MusicToken.Notesorder.IndexOf(previousNote) < 0)
+                else if (distanceWithPreviousNote + Notesorder.IndexOf(previousNote) < 0)
                 {
                     value--;
                 }

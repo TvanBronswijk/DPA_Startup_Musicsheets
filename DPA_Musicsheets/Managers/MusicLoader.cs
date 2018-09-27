@@ -1,8 +1,8 @@
 ﻿using PSAMControlLibrary;
-using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
 using DPA_Musicsheets.Converters.Strategy;
+using DPA_Musicsheets.Models.Wrappers;
 
 namespace DPA_Musicsheets.Managers
 {
@@ -18,7 +18,7 @@ namespace DPA_Musicsheets.Managers
             if (fileName.EndsWith(".mid"))
             {
                 var file = _midiConverter.OpenFile(fileName);
-                MidiLoaded.Invoke(this, file);
+                MidiLoaded.Invoke(this, new MidiFile(file));
 
 
                 var tokens = _midiConverter.Convert(file);
@@ -50,6 +50,6 @@ namespace DPA_Musicsheets.Managers
 
         public event EventHandler<string> LilypondLoaded;
         public event EventHandler<List<MusicalSymbol>> WPFLoaded;
-        public event EventHandler<Sequence> MidiLoaded;
+        public event EventHandler<MidiFile> MidiLoaded;
     }
 }
