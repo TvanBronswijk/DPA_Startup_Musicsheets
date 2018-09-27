@@ -32,6 +32,10 @@ namespace DPA_Musicsheets.Models
         {
             get
             {
+                if(TokenKind != Kind.Note)
+                {
+                    return PreviousToken?.Octave ?? 4;
+                }
                 var previousNote = Previous(Kind.Note)?.Value[0] ?? 'c';
                 var value = PreviousToken?.Octave ?? 4;
                 var distanceWithPreviousNote =
@@ -63,11 +67,9 @@ namespace DPA_Musicsheets.Models
 
         public string Step => Value[0].ToString();
         public int Length => int.Parse(Regex.Match(Value, @"\d+").Value);
-        
         public int Alter => Regex.Matches(Value, "is").Count - Regex.Matches(Value, "es|as").Count;
-
         public int Dots => Value.Count(c => c.Equals('.'));
-            
+
 
         public MusicToken Previous(Kind tokenKind) =>
             PreviousToken?.TokenKind == tokenKind ? PreviousToken : PreviousToken?.Previous(tokenKind);
