@@ -19,8 +19,6 @@ namespace DPA_Musicsheets.Models
         public int bpm { get; set; }// Aantal beatnotes per minute.
         public int beatsPerBar { get; set; }
 
-        public int absoluteTicks { get; set; }
-
         public Midi(int division, int beatsPerBar)
         {
             this.division = division;
@@ -30,7 +28,6 @@ namespace DPA_Musicsheets.Models
             this.startedNoteIsClosed = true;
             this.beatNote = 4;
             this.bpm = 120;
-            this.absoluteTicks = 0;
             this.beatsPerBar = beatsPerBar;
         }
 
@@ -39,7 +36,7 @@ namespace DPA_Musicsheets.Models
             int duration = 0;
             int dots = 0;
 
-            double deltaTicks = nextNoteAbsoluteTicks - absoluteTicks;
+            double deltaTicks = nextNoteAbsoluteTicks - previousNoteAbsoluteTicks;
 
             if (deltaTicks <= 0)
             {

@@ -116,7 +116,9 @@
     <Compile Include="Strategy\Context.cs" />
     <Compile Include="Strategy\Strategy.cs" />
     <Compile Include="Strategy\StrategyChannel.cs" />
+    <Compile Include="Strategy\StrategyEndTrack.cs" />
     <Compile Include="Strategy\StrategyMeta.cs" />
+    <Compile Include="Strategy\StrategyTempo.cs" />
     <Compile Include="Strategy\StrategyTimeSignature.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />
     <Compile Include="ViewModels\StaffsViewModel.cs" />

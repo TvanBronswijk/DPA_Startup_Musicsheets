@@ -24,9 +24,9 @@ namespace DPA_Musicsheets.Strategy
             this._strategy = strategy;
         }
 
-        public String execute(MidiEvent midievent, Midi midi)
+        public String execute(MidiEvent midiEvent, Midi midi)
         {
-            return this._strategy.execute(midievent,midi);
+            return this._strategy.execute(midiEvent, midi);
         }
 
     }

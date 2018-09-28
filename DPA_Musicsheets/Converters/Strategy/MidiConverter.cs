@@ -159,16 +159,7 @@ namespace DPA_Musicsheets.Converters.Strategy
 
                 foreach (var midiEvent in track.Iterator())
                 {
-                    // TODO: Split this switch statements and create separate logic.
-                    // We want to split this so that we can expand our functionality later with new keywords for example.
-                    // Hint: Command pattern? Strategies? Factory method?
-
                     // stratagie pattern
-                    // one for MESSAGETYPE
-                    // one for METATYPE
-                    // need to pass this class or the variables
-                    // return value will be al string.
-
                     IMidiMessage midiMessage = midiEvent.MidiMessage;
                     switch (midiMessage.MessageType)
                     {

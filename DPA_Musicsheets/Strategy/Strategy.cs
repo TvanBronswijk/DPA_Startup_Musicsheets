@@ -10,6 +10,6 @@ namespace DPA_Musicsheets.Strategy
 {
     interface Strategy
     {
-        String execute(MidiEvent midievent, Midi midi);
+        String execute(MidiEvent midiEvent, Midi midi);
     }
 }
