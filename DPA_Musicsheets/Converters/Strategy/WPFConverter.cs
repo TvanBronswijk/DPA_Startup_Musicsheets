@@ -1,4 +1,5 @@
 ﻿using DPA_Musicsheets.Models;
+using DPA_Musicsheets.Models.Wrappers;
 using PSAMControlLibrary;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
-    class WPFConverter : IMusicConverterStrategy<List<MusicalSymbol>>
+    class WPFConverter : IMusicConverterStrategy
     {
         
         private readonly Dictionary<MusicToken.Kind, Func<MusicToken, MusicalSymbol>> _convertCommands;
@@ -77,12 +78,12 @@ namespace DPA_Musicsheets.Converters.Strategy
             _convertCommands.Add(MusicToken.Kind.Tempo, (musicToken) => null /*Not Supported*/);
         }
 
-        public IEnumerable<MusicToken> Convert(List<MusicalSymbol> src)
+        public IEnumerable<MusicToken> Convert<T>(T src)
         {
             throw new NotImplementedException();
         }
 
-        public List<MusicalSymbol> Convert(IEnumerable<MusicToken> tokens)
+        public T Convert<T>(IEnumerable<MusicToken> tokens)
         {
             List<MusicalSymbol> symbols = new List<MusicalSymbol>();
 
@@ -104,11 +105,12 @@ namespace DPA_Musicsheets.Converters.Strategy
                     currentToken = currentToken.NextToken;
                 currentToken = currentToken.NextToken;
             }
+            WPFStaffs sym = new WPFStaffs(symbols);
 
-            return symbols;
+            return (T)(object)sym;
         }
 
-        public List<MusicalSymbol> OpenFile(string fileName)
+        public IEnumerable<MusicToken> OpenFile(string fileName)
         {
             throw new NotImplementedException();
         }

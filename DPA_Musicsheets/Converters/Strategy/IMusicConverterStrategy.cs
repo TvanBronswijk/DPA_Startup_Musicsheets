@@ -4,11 +4,11 @@ using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
-    interface IMusicConverterStrategy<T>
+    interface IMusicConverterStrategy
     {
-        IEnumerable<MusicToken> Convert(T src);
-        T Convert(IEnumerable<MusicToken> tokens);
-        T OpenFile(string fileName);
+        IEnumerable<MusicToken> Convert<T>(T src);
+        T Convert<T>(IEnumerable<MusicToken> tokens);
+        IEnumerable<MusicToken> OpenFile(string fileName);
         void SaveFile(string fileName);
 
     }

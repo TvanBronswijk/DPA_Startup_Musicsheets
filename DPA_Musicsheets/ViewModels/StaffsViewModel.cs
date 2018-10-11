@@ -19,7 +19,7 @@ namespace DPA_Musicsheets.ViewModels
         {
             Staffs = new ObservableCollection<MusicalSymbol>();
 
-            musicLoader.WPFLoaded += (_, args) => SetStaffs(args);
+            musicLoader.WPFLoaded += (_, args) => SetStaffs(args.Symbols);
         }
 
         /// <summary>
