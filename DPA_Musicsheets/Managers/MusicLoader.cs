@@ -33,12 +33,22 @@ namespace DPA_Musicsheets.Managers
 
         internal bool SaveFile(string fileName)
         {
-            throw new NotImplementedException();
+            if (fileName.EndsWith(".mid"))
+            {
+                _midiConverter.SaveFile(fileName);
+                return true;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public void LilyPondTextChanged(string text)
         {
-            throw new NotImplementedException();
+            var tokens = _lilypondConverter.Convert(text);
+            WPFLoaded.Invoke(this, _wpfConverter.Convert(tokens));
+            MidiLoaded.Invoke(this, new MidiFile(_midiConverter.Convert(tokens)));
         }
 
         private void Convert()
