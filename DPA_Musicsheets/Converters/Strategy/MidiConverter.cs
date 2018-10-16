@@ -1,4 +1,5 @@
 ﻿using DPA_Musicsheets.Models;
+using DPA_Musicsheets.Models.Wrappers;
 using DPA_Musicsheets.Strategy;
 using Sanford.Multimedia.Midi;
 using System;
@@ -9,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
-    class MidiConverter : IMusicConverterStrategy<Sequence>
+    class MidiConverter : IMusicConverterStrategy
     {
         public Sequence MidiSequence { get; set; }
 
@@ -18,9 +19,10 @@ namespace DPA_Musicsheets.Converters.Strategy
         private int _beatsPerBar;
 
 
-        public IEnumerable<MusicToken> Convert(Sequence src)
+        public IEnumerable<MusicToken> Convert<T>(T src)
         {
-            String lilyPondText = MidiToLilypond(src);
+            MidiFile tmp = (MidiFile)(object)src;
+            String lilyPondText = MidiToLilypond((Models.Wrappers.MidiFile)(object)src);
             lilyPondText = lilyPondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
 
             //converting it to lilypondToken
@@ -70,7 +72,7 @@ namespace DPA_Musicsheets.Converters.Strategy
 
         }
 
-        public Sequence Convert(IEnumerable<MusicToken> tokens)
+        public T Convert<T>(IEnumerable<MusicToken> tokens)
         {
             List<string> notesOrderWithCrosses = new List<string>() { "c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b" };
             int absoluteTicks = 0;
@@ -127,15 +129,20 @@ namespace DPA_Musicsheets.Converters.Strategy
 
             notesTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
             metaTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
-            return sequence;
+
+            MidiFile midiFile = new MidiFile(sequence);
+
+            return (T)(object)midiFile;
         }
 
-        public Sequence OpenFile(string fileName)
+        public IEnumerable<MusicToken> OpenFile(string fileName)
         {
             MidiSequence = new Sequence();
             MidiSequence.Load(fileName);
 
-            return MidiSequence;
+            MidiFile midiFile = new MidiFile(MidiSequence);
+
+            return this.Convert(midiFile);
         }
 
         public void SaveFile(string fileName)
@@ -143,7 +150,7 @@ namespace DPA_Musicsheets.Converters.Strategy
             MidiSequence.Save(fileName);
         }
 
-        private String MidiToLilypond(Sequence src)
+        private String MidiToLilypond(MidiFile src)
         {
             var context = new Context();
             //converting to lilypond string
@@ -151,11 +158,11 @@ namespace DPA_Musicsheets.Converters.Strategy
             lilypondContent.AppendLine("\\relative c' {");
             lilypondContent.AppendLine("\\clef treble");
 
-            var midi = new Midi(src.Division, _beatsPerBar);
+            var midi = new Midi(src.Sequence.Division, _beatsPerBar);
 
-            for (int i = 0; i < src.Count; i++)
+            for (int i = 0; i < src.Sequence.Count; i++)
             {
-                Track track = src[i];
+                Track track = src.Sequence[i];
 
                 foreach (var midiEvent in track.Iterator())
                 {

@@ -8,13 +8,14 @@ using DPA_Musicsheets.Models;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
-    class LilypondConverter : IMusicConverterStrategy<string>
+    class LilypondConverter : IMusicConverterStrategy
     {
-        public IEnumerable<MusicToken> Convert(string src)
+        public IEnumerable<MusicToken> Convert<T>(T src)
         {
             LinkedList<MusicToken> tokens = new LinkedList<MusicToken>();
+            string str = (string)(object)src;
 
-            foreach (string s in src.Split(' ').Where(item => item.Length > 0))
+            foreach (string s in str.Split(' ').Where(item => item.Length > 0))
             {
                 MusicToken token = new MusicToken()
                 {
@@ -57,7 +58,7 @@ namespace DPA_Musicsheets.Converters.Strategy
 
         }
 
-        public string Convert(IEnumerable<MusicToken> tokens)
+        public T Convert<T>(IEnumerable<MusicToken> tokens)
         {
             StringBuilder lilypondText = new StringBuilder();
 
@@ -83,17 +84,19 @@ namespace DPA_Musicsheets.Converters.Strategy
                 }
             }
 
-            return lilypondText.ToString();
+            return (T)(object)lilypondText.ToString();
         }
 
-        public string OpenFile(string fileName)
+        public IEnumerable<MusicToken> OpenFile(string fileName)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var line in File.ReadAllLines(fileName))
             {
                 sb.AppendLine(line);
             }
-            return sb.ToString();
+
+            String str = (String)(object)sb.ToString();
+            return this.Convert(str);
         }
 
         public void SaveFile(string fileName)

@@ -102,6 +102,8 @@
     <Compile Include="Converters\Strategy\MidiConverter.cs" />
     <Compile Include="Converters\MusicConverter.cs" />
     <Compile Include="Converters\Strategy\WPFConverter.cs" />
+    <Compile Include="Factory\ConverterFactory.cs" />
+    <Compile Include="Factory\IFactory.cs" />
     <Compile Include="Models\Midi.cs" />
     <Compile Include="Managers\MidiPlayer.cs" />
     <Compile Include="Models\Lilypond\ExpressionToken.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Models\Lilypond\Token.cs" />
     <Compile Include="Models\Lilypond\WrappingToken.cs" />
     <Compile Include="Models\Wrappers\MidiFile.cs" />
+    <Compile Include="Models\Wrappers\WPFStaffs.cs" />
     <Compile Include="Services\FileIO.cs" />
     <Compile Include="Converters\Strategy\IMusicConverterStrategy.cs" />
     <Compile Include="Managers\MusicLoader.cs" />

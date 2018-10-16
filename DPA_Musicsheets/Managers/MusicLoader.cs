@@ -3,32 +3,20 @@ using System;
 using System.Collections.Generic;
 using DPA_Musicsheets.Converters.Strategy;
 using DPA_Musicsheets.Models.Wrappers;
+using DPA_Musicsheets.Factory;
+using DPA_Musicsheets.Models;
 
 namespace DPA_Musicsheets.Managers
 {
     public class MusicLoader
     {
-        private LilypondConverter _lilypondConverter = new LilypondConverter();
-        private MidiConverter _midiConverter = new MidiConverter();
-        private WPFConverter _wpfConverter = new WPFConverter();
-        
-        
+        private ConverterFactory converterFactory = new ConverterFactory();
+
         public void OpenFile(string fileName)
         {
-            if (fileName.EndsWith(".mid"))
-            {
-                var file = _midiConverter.OpenFile(fileName);
-                MidiLoaded.Invoke(this, new MidiFile(file));
-
-
-                var tokens = _midiConverter.Convert(file);
-                LilypondLoaded.Invoke(this, _lilypondConverter.Convert(tokens));
-                WPFLoaded.Invoke(this, _wpfConverter.Convert(tokens));
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            var converter = converterFactory.CreateConverter(fileName);
+            var tokens = converter.OpenFile(fileName);
+            invoke(tokens);
         }
 
         internal bool SaveFile(string fileName)
@@ -50,7 +38,12 @@ namespace DPA_Musicsheets.Managers
             WPFLoaded.Invoke(this, _wpfConverter.Convert(tokens));
             MidiLoaded.Invoke(this, new MidiFile(_midiConverter.Convert(tokens)));
         }
-
+        public void invoke(IEnumerable<MusicToken> tokens)
+        {
+            MidiLoaded.Invoke(this, new MidiConverter().Convert<MidiFile>(tokens));
+            LilypondLoaded.Invoke(this, new LilypondConverter().Convert<String>(tokens));
+            WPFLoaded.Invoke(this, new WPFConverter().Convert<WPFStaffs>(tokens));
+        }
         private void Convert()
         {
             LilypondLoaded.Invoke(this, null);
@@ -59,7 +52,7 @@ namespace DPA_Musicsheets.Managers
         }
 
         public event EventHandler<string> LilypondLoaded;
-        public event EventHandler<List<MusicalSymbol>> WPFLoaded;
+        public event EventHandler<WPFStaffs> WPFLoaded;//needs to be changed to the wrapper
         public event EventHandler<MidiFile> MidiLoaded;
     }
 }
