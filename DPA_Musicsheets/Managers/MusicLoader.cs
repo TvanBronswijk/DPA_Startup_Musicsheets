@@ -21,22 +21,14 @@ namespace DPA_Musicsheets.Managers
 
         internal bool SaveFile(string fileName)
         {
-            if (fileName.EndsWith(".mid"))
-            {
-                _midiConverter.SaveFile(fileName);
-                return true;
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            var converter = converterFactory.CreateConverter(fileName);
+            converter.SaveFile(fileName);
+            return true;
         }
 
         public void LilyPondTextChanged(string text)
         {
-            var tokens = _lilypondConverter.Convert(text);
-            WPFLoaded.Invoke(this, _wpfConverter.Convert(tokens));
-            MidiLoaded.Invoke(this, new MidiFile(_midiConverter.Convert(tokens)));
+            invoke(new LilypondConverter().Convert<string>(text));
         }
         public void invoke(IEnumerable<MusicToken> tokens)
         {

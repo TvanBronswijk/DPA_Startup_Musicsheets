@@ -24,6 +24,7 @@ namespace DPA_Musicsheets.Converters.Strategy
 
                 switch (s)
                 {
+                    case "\r\n": break;
                     case "\\relative": token.TokenKind = MusicToken.Kind.Staff; break;
                     case "\\clef": token.TokenKind = MusicToken.Kind.Clef; break;
                     case "\\time": token.TokenKind = MusicToken.Kind.Time; break;
@@ -45,13 +46,17 @@ namespace DPA_Musicsheets.Converters.Strategy
                     token.TokenKind = MusicToken.Kind.Rest;
                 }
 
-                if (tokens.Last != null)
+                if (s != "\r\n")
                 {
-                    tokens.Last.Value.NextToken = token;
-                    token.PreviousToken = tokens.Last.Value;
-                }
+                    if (tokens.Last != null)
+                    {
+                        tokens.Last.Value.NextToken = token;
+                        token.PreviousToken = tokens.Last.Value;
+                    }
 
-                tokens.AddLast(token);
+                    tokens.AddLast(token);
+                }
+               
             }
 
             return tokens;
@@ -68,18 +73,18 @@ namespace DPA_Musicsheets.Converters.Strategy
 
                 switch (musicalSymbol.TokenKind)
                 {
-                    case MusicToken.Kind.Staff: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.Clef: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.Time: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.Tempo: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.Repeat: lilypondText.Append("\\" + musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Staff: lilypondText.Append( musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Clef: lilypondText.Append( musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Time: lilypondText.Append( musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Tempo: lilypondText.Append( musicalSymbol.Value + " "); break;
+                    case MusicToken.Kind.Repeat: lilypondText.Append( musicalSymbol.Value + " "); break;
                     case MusicToken.Kind.Alternative: lilypondText.Append(musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.SectionStart: lilypondText.Append("{\r\n"); break;
+                    case MusicToken.Kind.SectionStart: lilypondText.Append("{ \r\n "); break;
                     case MusicToken.Kind.SectionEnd: lilypondText.Append(" }"); break;
-                    case MusicToken.Kind.Bar: lilypondText.Append("|" + "\r\n"); break;
+                    case MusicToken.Kind.Bar: lilypondText.Append("|" + " \r\n "); break;
                     case MusicToken.Kind.Note: lilypondText.Append(musicalSymbol.Value + " "); break;
                     case MusicToken.Kind.Rest: lilypondText.Append(musicalSymbol.Value + " "); break;
-                    case MusicToken.Kind.Unknown: lilypondText.Append(musicalSymbol.Value + "\r\n"); break;
+                    case MusicToken.Kind.Unknown: lilypondText.Append(musicalSymbol.Value + " \r\n "); break;
                     default: break;
                 }
             }
