@@ -108,7 +108,7 @@ namespace DPA_Musicsheets.Converters.Strategy
         {
             using (StreamWriter outputFile = new StreamWriter(fileName))
             {
-                //outputFile.Write(LilypondText);
+                //outputFile.Write(LilypondText); //TODO need to make a local storage for the musicTokens.
                 outputFile.Close();
             }
         }

@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Managers;
+﻿using DPA_Musicsheets.Command;
+using DPA_Musicsheets.Managers;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
@@ -65,6 +66,15 @@ namespace DPA_Musicsheets.ViewModels
         public ICommand OnKeyDownCommand => new RelayCommand<KeyEventArgs>((e) =>
         {
             Console.WriteLine($"Key down: {e.Key}");
+            var keyboard = e.KeyboardDevice;
+            if(keyboard.IsKeyDown(Key.O)&& keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.O) && keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                new OpenFileCommand(this).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.P) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.P) && keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                new SavePDFCommand().Execute();//test dit werkt nog niet.
+            }
         });
 
         public ICommand OnKeyUpCommand => new RelayCommand(() =>

@@ -17,6 +17,10 @@ namespace DPA_Musicsheets.Factory
             {
                 return new MidiConverter();
             }
+            if (name.EndsWith(".ly"))
+            {
+                return new LilypondConverter();
+            }
             return null;
         }
     }

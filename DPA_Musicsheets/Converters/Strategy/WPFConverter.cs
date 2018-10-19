@@ -87,23 +87,27 @@ namespace DPA_Musicsheets.Converters.Strategy
         {
             List<MusicalSymbol> symbols = new List<MusicalSymbol>();
 
-            MusicToken currentToken = tokens.First();
-            while (currentToken != null)
+            if (tokens.Count() != 0)
             {
-               
-                if (_convertCommands.TryGetValue(currentToken.TokenKind, out var func))
+
+                MusicToken currentToken = tokens.First();
+                while (currentToken != null)
                 {
-                    var newSymbol = func(currentToken);
-                    if(newSymbol != null)
-                    symbols.Add(newSymbol);
 
-                }
+                    if (_convertCommands.TryGetValue(currentToken.TokenKind, out var func))
+                    {
+                        var newSymbol = func(currentToken);
+                        if (newSymbol != null)
+                            symbols.Add(newSymbol);
 
-                if (currentToken.TokenKind == MusicToken.Kind.Alternative
-                    || currentToken.TokenKind == MusicToken.Kind.Clef
-                    || currentToken.TokenKind == MusicToken.Kind.Time)
+                    }
+
+                    if (currentToken.TokenKind == MusicToken.Kind.Alternative
+                        || currentToken.TokenKind == MusicToken.Kind.Clef
+                        || currentToken.TokenKind == MusicToken.Kind.Time)
+                        currentToken = currentToken.NextToken;
                     currentToken = currentToken.NextToken;
-                currentToken = currentToken.NextToken;
+                }
             }
             WPFStaffs sym = new WPFStaffs(symbols);
 

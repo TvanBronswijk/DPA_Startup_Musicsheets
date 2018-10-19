@@ -24,5 +24,10 @@ namespace DPA_Musicsheets.Views
         {
             InitializeComponent();
         }
+
+        private void Lilypond_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
     }
 }

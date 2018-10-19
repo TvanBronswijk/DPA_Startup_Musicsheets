@@ -1,4 +1,5 @@
 ﻿using DPA_Musicsheets.Managers;
+using DPA_Musicsheets.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Command;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -19,6 +21,7 @@ namespace DPA_Musicsheets.ViewModels
         private string _text;
         private string _previousText;
         private string _nextText;
+        private TextBox textbox;
 
         /// <summary>
         /// This text will be in the textbox.
@@ -107,14 +110,59 @@ namespace DPA_Musicsheets.ViewModels
 
         public ICommand SaveAsCommand => new RelayCommand(() =>
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
+            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly" };
             if (saveFileDialog.ShowDialog() == true)
             {
                 string extension = Path.GetExtension(saveFileDialog.FileName);
-                if(!_musicLoader.SaveFile(saveFileDialog.FileName))
+                if (!_musicLoader.SaveFile(saveFileDialog.FileName))
                 {
                     MessageBox.Show($"Extension {extension} is not supported.");
                 }
+            }
+        });
+
+        public ICommand SelectionChangedCommand => new RelayCommand<RoutedEventArgs>((args) =>
+        {
+            textbox = args.Source as TextBox;
+            
+        });
+
+        public ICommand OnKeyDownCommand => new RelayCommand<KeyEventArgs>((e) =>
+        {
+            Console.WriteLine($"Key down: {e.Key}");
+            var keyboard = e.KeyboardDevice;
+
+            if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddTempoCommand(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.C) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.C) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddClefTrebbleCommand(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D4) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D4) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddTime4Command(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D6) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D6) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddTime6Command(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D3) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D3) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddTime3Command(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddTimeCommand(textbox).Execute();
+            }
+            else if (keyboard.IsKeyDown(Key.B) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.B) && keyboard.IsKeyDown(Key.RightAlt))
+            {
+                new AddBarLinesCommand(textbox).Execute(); //werkt niet
+            }
+            else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                new SaveLilypondCommand(this).Execute();//werkt niet
             }
         });
         #endregion Commands for buttons like Undo, Redo and SaveAs
