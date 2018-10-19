@@ -1,4 +1,5 @@
 ﻿using DPA_Musicsheets.Managers;
+using DPA_Musicsheets.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Models.Wrappers;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -16,9 +18,7 @@ namespace DPA_Musicsheets.ViewModels
         private MusicLoader _musicLoader;
         private MainViewModel _mainViewModel { get; set; }
 
-        private string _text;
-        private string _previousText;
-        private string _nextText;
+        private LilypondTextMemory _memory;
 
         /// <summary>
         /// This text will be in the textbox.
@@ -28,15 +28,15 @@ namespace DPA_Musicsheets.ViewModels
         {
             get
             {
-                return _text;
+                return _memory.Text;
             }
             set
             {
                 if (!_waitingForRender && !_textChangedByLoad)
                 {
-                    _previousText = _text;
+                    _memory.Save();
                 }
-                _text = value;
+                _memory.Text = value;
                 RaisePropertyChanged(() => LilypondText);
             }
         }
@@ -50,7 +50,7 @@ namespace DPA_Musicsheets.ViewModels
         {
             _mainViewModel = mainViewModel;
             _musicLoader = musicLoader;
-            _text = "Your lilypond text will appear here.";
+            _memory = new LilypondTextMemory("Your lilypond text will appear here.");
 
             musicLoader.LilypondLoaded += (_, args) => LilypondTextLoaded(args);
         }
@@ -58,7 +58,7 @@ namespace DPA_Musicsheets.ViewModels
         public void LilypondTextLoaded(string text)
         {
             _textChangedByLoad = true;
-            LilypondText = _previousText = text;
+            LilypondText = text;
             _textChangedByLoad = false;
         }
 
@@ -92,18 +92,16 @@ namespace DPA_Musicsheets.ViewModels
         #region Commands for buttons like Undo, Redo and SaveAs
         public RelayCommand UndoCommand => new RelayCommand(() =>
         {
-            _nextText = LilypondText;
-            LilypondText = _previousText;
-            _previousText = null;
-        }, () => _previousText != null && _previousText != LilypondText);
+            _memory = _memory.Undo();
+            RaisePropertyChanged(() => LilypondText);
+        }, () => _memory.canUndo);
 
         public RelayCommand RedoCommand => new RelayCommand(() =>
         {
-            _previousText = LilypondText;
-            LilypondText = _nextText;
-            _nextText = null;
+            _memory = _memory.Redo();
             RedoCommand.RaiseCanExecuteChanged();
-        }, () => _nextText != null && _nextText != LilypondText);
+            RaisePropertyChanged(() => LilypondText);
+        }, () => _memory.canRedo);
 
         public ICommand SaveAsCommand => new RelayCommand(() =>
         {

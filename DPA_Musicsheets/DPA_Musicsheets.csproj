@@ -104,12 +104,10 @@
     <Compile Include="Converters\Strategy\WPFConverter.cs" />
     <Compile Include="Factory\ConverterFactory.cs" />
     <Compile Include="Factory\IFactory.cs" />
+    <Compile Include="Models\LilypondTextMemory.cs" />
     <Compile Include="Models\Midi.cs" />
     <Compile Include="Managers\MidiPlayer.cs" />
-    <Compile Include="Models\Lilypond\ExpressionToken.cs" />
-    <Compile Include="Models\Lilypond\LilypondContext.cs" />
-    <Compile Include="Models\Lilypond\Token.cs" />
-    <Compile Include="Models\Lilypond\WrappingToken.cs" />
+    <Compile Include="Models\Wrappers\LilypondText.cs" />
     <Compile Include="Models\Wrappers\MidiFile.cs" />
     <Compile Include="Models\Wrappers\WPFStaffs.cs" />
     <Compile Include="Services\FileIO.cs" />
