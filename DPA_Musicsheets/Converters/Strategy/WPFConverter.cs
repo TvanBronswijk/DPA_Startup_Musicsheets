@@ -1,8 +1,11 @@
 ﻿using DPA_Musicsheets.Models;
 using DPA_Musicsheets.Models.Wrappers;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using PSAMControlLibrary;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DPA_Musicsheets.Converters.Strategy
@@ -121,7 +124,19 @@ namespace DPA_Musicsheets.Converters.Strategy
 
         public void SaveFile(string fileName)
         {
-            throw new NotImplementedException();
+
+            PdfDocument document = new PdfDocument();
+            PdfPage page = document.AddPage();
+            foreach (var staff in )
+            {
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+                XFont font = new XFont("Verdana", 20, XFontStyle.Bold);
+                gfx.DrawString("Hello, World!", font, XBrushes.Black,
+                new XRect(0, 0, page.Width, page.Height), XStringFormat.Center);
+            }
+
+            document.Save(fileName);
+            Process.Start(fileName);// for testing*/
         }
     }
 }

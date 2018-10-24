@@ -21,6 +21,7 @@ namespace DPA_Musicsheets.ViewModels
         private MainViewModel _mainViewModel { get; set; }
 
         private LilypondTextMemory _memory;
+        private TextBox textbox;
 
         /// <summary>
         /// This text will be in the textbox.
@@ -159,7 +160,7 @@ namespace DPA_Musicsheets.ViewModels
             }
             else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightCtrl))
             {
-                new SaveLilypondCommand(this).Execute();//werkt niet
+                new SaveCommand(this).Execute();//werkt niet
             }
         });
         #endregion Commands for buttons like Undo, Redo and SaveAs

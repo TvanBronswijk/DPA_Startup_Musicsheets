@@ -114,8 +114,7 @@
     <Compile Include="Command\AddTimeCommand.cs" />
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\OpenFileCommand.cs" />
-    <Compile Include="Command\SaveLilypondCommand.cs" />
-    <Compile Include="Command\SavePDFCommand.cs" />
+    <Compile Include="Command\SaveCommand.cs" />
     <Compile Include="Converters\Strategy\LilypondConverter.cs" />
     <Compile Include="Converters\Strategy\MidiConverter.cs" />
     <Compile Include="Converters\MusicConverter.cs" />
