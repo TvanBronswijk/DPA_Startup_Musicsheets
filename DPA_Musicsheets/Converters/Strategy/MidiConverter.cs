@@ -145,7 +145,7 @@ namespace DPA_Musicsheets.Converters.Strategy
             return this.Convert(midiFile);
         }
 
-        public void SaveFile(string fileName)
+        public void SaveFile(string fileName, IEnumerable<MusicToken> tokens)
         {
             MidiSequence.Save(fileName);
         }

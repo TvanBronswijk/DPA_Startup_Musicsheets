@@ -104,11 +104,11 @@ namespace DPA_Musicsheets.Converters.Strategy
             return this.Convert(str);
         }
 
-        public void SaveFile(string fileName)
+        public void SaveFile(string fileName, IEnumerable<MusicToken> tokens)
         {
             using (StreamWriter outputFile = new StreamWriter(fileName))
             {
-                //outputFile.Write(LilypondText); //TODO need to make a local storage for the musicTokens.
+                outputFile.Write(Convert(tokens));
                 outputFile.Close();
             }
         }

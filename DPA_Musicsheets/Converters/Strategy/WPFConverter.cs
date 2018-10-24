@@ -122,7 +122,7 @@ namespace DPA_Musicsheets.Converters.Strategy
             throw new NotImplementedException();
         }
 
-        public void SaveFile(string fileName)
+        public void SaveFile(string fileName, IEnumerable<MusicToken> tokens)
         {
 
             PdfDocument document = new PdfDocument();

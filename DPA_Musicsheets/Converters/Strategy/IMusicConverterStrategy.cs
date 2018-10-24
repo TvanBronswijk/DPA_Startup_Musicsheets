@@ -9,7 +9,7 @@ namespace DPA_Musicsheets.Converters.Strategy
         IEnumerable<MusicToken> Convert<T>(T src);
         T Convert<T>(IEnumerable<MusicToken> tokens);
         IEnumerable<MusicToken> OpenFile(string fileName);
-        void SaveFile(string fileName);
+        void SaveFile(string fileName, IEnumerable<MusicToken> tokens);
 
     }
 }
