@@ -10,13 +10,14 @@ namespace DPA_Musicsheets.Managers
 {
     public class MusicLoader
     {
+        private IEnumerable<MusicToken> tokens;
         private ConverterFactory converterFactory = new ConverterFactory();
 
         public void OpenFile(string fileName)
         {
             var converter = converterFactory.CreateConverter(fileName);
-            var tokens = converter.OpenFile(fileName);
-            invoke(tokens);
+            tokens = converter.OpenFile(fileName);
+            invoke();
         }
 
         internal bool SaveFile(string fileName)
@@ -28,9 +29,10 @@ namespace DPA_Musicsheets.Managers
 
         public void LilyPondTextChanged(string text)
         {
-            invoke(new LilypondConverter().Convert<string>(text));
+            tokens = new LilypondConverter().Convert<string>(text);
+            invoke();
         }
-        public void invoke(IEnumerable<MusicToken> tokens)
+        public void invoke()
         {
             MidiLoaded.Invoke(this, new MidiConverter().Convert<MidiFile>(tokens));
             LilypondLoaded.Invoke(this, new LilypondConverter().Convert<String>(tokens));
