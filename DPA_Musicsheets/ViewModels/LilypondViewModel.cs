@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DPA_Musicsheets.Command;
 using DPA_Musicsheets.Models.Wrappers;
+using DPA_Musicsheets.State;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -76,7 +77,7 @@ namespace DPA_Musicsheets.ViewModels
                 _waitingForRender = true;
                 _lastChange = DateTime.Now;
 
-                _mainViewModel.CurrentState = "Rendering...";
+                _mainViewModel.State = new RenderingState(_mainViewModel);
 
                 Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
                 {
@@ -86,7 +87,7 @@ namespace DPA_Musicsheets.ViewModels
                         UndoCommand.RaiseCanExecuteChanged();
 
                         _musicLoader.LilyPondTextChanged(LilypondText);
-                        _mainViewModel.CurrentState = "";
+                        _mainViewModel.State = new UnsavedState(_mainViewModel);
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }
@@ -116,6 +117,7 @@ namespace DPA_Musicsheets.ViewModels
                 {
                     MessageBox.Show($"Extension {extension} is not supported.");
                 }
+                _mainViewModel.State = new IdleState(_mainViewModel);
             }
         });
 
