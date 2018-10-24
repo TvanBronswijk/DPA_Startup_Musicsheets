@@ -114,6 +114,10 @@
     <Compile Include="Converters\Strategy\IMusicConverterStrategy.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\MusicToken.cs" />
+    <Compile Include="State\IdleState.cs" />
+    <Compile Include="State\RenderingState.cs" />
+    <Compile Include="State\State.cs" />
+    <Compile Include="State\UnsavedState.cs" />
     <Compile Include="Strategy\Context.cs" />
     <Compile Include="Strategy\Strategy.cs" />
     <Compile Include="Strategy\StrategyChannel.cs" />

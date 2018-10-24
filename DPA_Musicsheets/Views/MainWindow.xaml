@@ -40,7 +40,7 @@
             <local:MidiPlayerCtrl Margin="5" Grid.Row="2" Grid.Column="1"/>
         </StackPanel>
         <local:LilypondViewerCtrl Margin="5" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"/>
-        <Label Content="{Binding CurrentState, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"/>
+        <Label Content="{Binding State, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"/>
         <local:StaffViewerCtrl Margin="5" Grid.Row="2" Grid.Column="1"/>
     </Grid>
 </Window>
