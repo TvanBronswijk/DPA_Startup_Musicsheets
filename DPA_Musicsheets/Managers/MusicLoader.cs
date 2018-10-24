@@ -23,7 +23,7 @@ namespace DPA_Musicsheets.Managers
         internal bool SaveFile(string fileName)
         {
             var converter = converterFactory.CreateConverter(fileName);
-            converter.SaveFile(fileName);
+            converter.SaveFile(fileName, tokens);
             return true;
         }
 
