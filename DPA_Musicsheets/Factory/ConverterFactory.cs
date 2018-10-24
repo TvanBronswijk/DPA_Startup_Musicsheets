@@ -21,6 +21,10 @@ namespace DPA_Musicsheets.Factory
             {
                 return new LilypondConverter();
             }
+            if (name.EndsWith(".pdf"))
+            {
+                return new LilypondConverter();
+            }
             return null;
         }
     }

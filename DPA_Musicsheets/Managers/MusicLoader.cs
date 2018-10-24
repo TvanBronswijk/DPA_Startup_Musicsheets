@@ -46,7 +46,7 @@ namespace DPA_Musicsheets.Managers
         }
 
         public event EventHandler<string> LilypondLoaded;
-        public event EventHandler<WPFStaffs> WPFLoaded;//needs to be changed to the wrapper
+        public event EventHandler<WPFStaffs> WPFLoaded;
         public event EventHandler<MidiFile> MidiLoaded;
     }
 }

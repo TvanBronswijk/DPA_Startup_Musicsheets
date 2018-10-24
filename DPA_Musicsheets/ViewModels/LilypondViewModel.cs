@@ -160,7 +160,7 @@ namespace DPA_Musicsheets.ViewModels
             }
             else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightCtrl))
             {
-                new SaveCommand(this).Execute();//werkt niet
+                new SaveCommand(_musicLoader).Execute();//werkt niet
             }
         });
         #endregion Commands for buttons like Undo, Redo and SaveAs

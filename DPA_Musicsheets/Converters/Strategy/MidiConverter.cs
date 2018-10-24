@@ -118,7 +118,7 @@ namespace DPA_Musicsheets.Converters.Strategy
                         break;
                     case MusicToken.Kind.Time:
                         byte[] timeSignature = new byte[4];
-                        timeSignature[0] = (byte)_beatsPerBar;
+                        timeSignature[0] = (byte)_beatNote;// was _beatsperbar maar dit werkte niet ??? wordt nooit geupdate?
                         timeSignature[1] = (byte)(Math.Log(_beatNote) / Math.Log(2));
                         metaTrack.Insert(absoluteTicks, new MetaMessage(MetaType.TimeSignature, timeSignature));
                         break;
@@ -147,7 +147,8 @@ namespace DPA_Musicsheets.Converters.Strategy
 
         public void SaveFile(string fileName, IEnumerable<MusicToken> tokens)
         {
-            MidiSequence.Save(fileName);
+            var MidiSequence = Convert<MidiFile>(tokens);
+            MidiSequence.Sequence.Save(fileName);// get error.
         }
 
         private String MidiToLilypond(MidiFile src)

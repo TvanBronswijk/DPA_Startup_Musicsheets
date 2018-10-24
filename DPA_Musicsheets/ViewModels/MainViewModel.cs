@@ -71,10 +71,6 @@ namespace DPA_Musicsheets.ViewModels
             {
                 new OpenFileCommand(this).Execute();
             }
-            else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.P) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.P) && keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                new SavePDFCommand().Execute();//test dit werkt nog niet.
-            }
         });
 
         public ICommand OnKeyUpCommand => new RelayCommand(() =>

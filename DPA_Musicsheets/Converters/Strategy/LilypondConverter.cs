@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DPA_Musicsheets.Models;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 
 namespace DPA_Musicsheets.Converters.Strategy
 {
@@ -106,10 +109,47 @@ namespace DPA_Musicsheets.Converters.Strategy
 
         public void SaveFile(string fileName, IEnumerable<MusicToken> tokens)
         {
-            using (StreamWriter outputFile = new StreamWriter(fileName))
+            if (fileName.EndsWith(".pdf"))
             {
-                outputFile.Write(Convert(tokens));
-                outputFile.Close();
+                string lilypond = Convert<string>(tokens);
+                int x = 50;
+                int y = 100;
+
+                PdfDocument document = new PdfDocument();
+                document.Info.Title = "Lilypond";
+                PdfPage page = document.AddPage();
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+
+
+                XFont header = new XFont("Verdana", 20, XFontStyle.BoldItalic);
+                gfx.DrawString("Lilypond", header, XBrushes.Black,
+                new XRect(0, 50, page.Width, 0), XStringFormats.Center);
+
+                foreach (string s in lilypond.Split(' ').Where(item => item.Length > 0))
+                {
+                    if (s == "\r\n")
+                    {
+                        x = 50;
+                        y += 15;
+                    }
+                    else
+                    {
+                        XFont font = new XFont("Verdana", 10, XFontStyle.BoldItalic);
+                        gfx.DrawString(s, font, XBrushes.Black,
+                        new XRect(x, y, 0, 0), XStringFormats.TopLeft);
+                        x += (s.Length * 8);
+                    }
+                }
+                document.Save(fileName);
+                Process.Start(fileName);// test
+            }
+            else
+            {
+                using (StreamWriter outputFile = new StreamWriter(fileName))
+                {
+                    outputFile.Write(Convert<String>(tokens));
+                    outputFile.Close();
+                }
             }
         }
     }
