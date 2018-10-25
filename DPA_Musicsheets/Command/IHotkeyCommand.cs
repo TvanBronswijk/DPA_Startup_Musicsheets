@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Command
 {
-    abstract class Command : IHotkeyCommand
+    interface IHotkeyCommand
     {
-        public abstract void Execute();
+        void Execute();
     }
 }

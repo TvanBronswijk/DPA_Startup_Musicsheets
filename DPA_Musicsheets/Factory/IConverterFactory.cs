@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Factory
 {
-    interface IFactory
+    interface IConverterFactory
     {
         IMusicConverterStrategy CreateConverter(String name);
     }

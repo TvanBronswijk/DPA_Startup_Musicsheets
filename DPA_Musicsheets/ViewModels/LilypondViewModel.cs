@@ -13,11 +13,13 @@ using System.Windows.Input;
 using DPA_Musicsheets.Command;
 using DPA_Musicsheets.Models.Wrappers;
 using DPA_Musicsheets.State;
+using DPA_Musicsheets.Factory;
 
 namespace DPA_Musicsheets.ViewModels
 {
     public class LilypondViewModel : ViewModelBase
     {
+        private HotkeyFactory hotkeyFactory;
         private MusicLoader _musicLoader;
         private MainViewModel _mainViewModel { get; set; }
 
@@ -54,6 +56,7 @@ namespace DPA_Musicsheets.ViewModels
         {
             _mainViewModel = mainViewModel;
             _musicLoader = musicLoader;
+            hotkeyFactory = new HotkeyFactory();
             _memory = new LilypondTextMemory("Your lilypond text will appear here.");
 
             musicLoader.LilypondLoaded += (_, args) => LilypondTextLoaded(args);
@@ -132,38 +135,8 @@ namespace DPA_Musicsheets.ViewModels
             Console.WriteLine($"Key down: {e.Key}");
             var keyboard = e.KeyboardDevice;
 
-            if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddTempoCommand(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.C) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.C) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddClefTrebbleCommand(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D4) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D4) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddTime4Command(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D6) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D6) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddTime6Command(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D3) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.D3) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddTime3Command(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.T) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddTimeCommand(textbox).Execute();
-            }
-            else if (keyboard.IsKeyDown(Key.B) && keyboard.IsKeyDown(Key.LeftAlt) || keyboard.IsKeyDown(Key.B) && keyboard.IsKeyDown(Key.RightAlt))
-            {
-                new AddBarLinesCommand(textbox).Execute(); //werkt niet
-            }
-            else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                new SaveCommand(_musicLoader).Execute();//werkt niet
-            }
+            IHotkeyCommand command =  hotkeyFactory.CreateHotkey(keyboard, textbox);
+            if(command != null) command.Execute();
         });
         #endregion Commands for buttons like Undo, Redo and SaveAs
     }

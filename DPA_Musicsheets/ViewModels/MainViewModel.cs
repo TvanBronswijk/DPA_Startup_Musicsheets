@@ -77,6 +77,10 @@ namespace DPA_Musicsheets.ViewModels
             {
                 new OpenFileCommand(this).Execute();
             }
+            else if (keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.LeftCtrl) || keyboard.IsKeyDown(Key.S) && keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                new SaveCommand(_musicLoader).Execute();
+            }
         });
 
         public ICommand OnKeyUpCommand => new RelayCommand(() =>

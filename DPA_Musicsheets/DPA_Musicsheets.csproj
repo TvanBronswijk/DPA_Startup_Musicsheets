@@ -114,6 +114,7 @@
     <Compile Include="Command\AddTime6Command.cs" />
     <Compile Include="Command\AddTimeCommand.cs" />
     <Compile Include="Command\Command.cs" />
+    <Compile Include="Command\IHotkeyCommand.cs" />
     <Compile Include="Command\OpenFileCommand.cs" />
     <Compile Include="Command\SaveCommand.cs" />
     <Compile Include="Converters\Strategy\LilypondConverter.cs" />
@@ -121,7 +122,9 @@
     <Compile Include="Converters\MusicConverter.cs" />
     <Compile Include="Converters\Strategy\WPFConverter.cs" />
     <Compile Include="Factory\ConverterFactory.cs" />
-    <Compile Include="Factory\IFactory.cs" />
+    <Compile Include="Factory\HotkeyFactory.cs" />
+    <Compile Include="Factory\IConverterFactory.cs" />
+    <Compile Include="Factory\IHotkeyFactory.cs" />
     <Compile Include="Models\LilypondTextMemory.cs" />
     <Compile Include="Models\Midi.cs" />
     <Compile Include="Managers\MidiPlayer.cs" />

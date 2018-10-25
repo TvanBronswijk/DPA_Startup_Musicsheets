@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Factory
 {
-    class ConverterFactory : IFactory
+    class ConverterFactory : IConverterFactory
     {
         public IMusicConverterStrategy CreateConverter(string name)
         {
