@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DPA_Musicsheets.Command;
-using DPA_Musicsheets.Models.Wrappers;
 using DPA_Musicsheets.State;
 using DPA_Musicsheets.Factory;
 
