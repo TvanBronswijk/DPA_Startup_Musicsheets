@@ -17,7 +17,7 @@ namespace DPA_Musicsheets.Command
             _textBox = textBox;
         }
 
-        public override void Execute() // werkt nog niet 100 procent
+        public override void Execute()
         {
             String previous = "";
             StringBuilder lilypondText = new StringBuilder();
