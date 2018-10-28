@@ -31,6 +31,7 @@ namespace DPA_Musicsheets.Models
             }
             newSave.next = this;
             previous = newSave;
+            next = null;
         }
 
         public bool canUndo => previous != null;

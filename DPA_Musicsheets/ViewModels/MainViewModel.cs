@@ -12,7 +12,7 @@ namespace DPA_Musicsheets.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private ViewModelState<MainViewModel> state;
+        private MainViewModelState state;
         private string _fileName;
         public string FileName
         {
@@ -27,7 +27,7 @@ namespace DPA_Musicsheets.ViewModels
             }
         }
 
-        public ViewModelState<MainViewModel> State
+        public MainViewModelState State
         {
             get
             {
@@ -86,7 +86,7 @@ namespace DPA_Musicsheets.ViewModels
 
         public ICommand OnWindowClosingCommand => new RelayCommand<CancelEventArgs>((e) =>
         {
-            state.exit(e);
+            state.Exit(e);
         });
         #endregion Focus and key commands, these can be used for implementing hotkeys
     }

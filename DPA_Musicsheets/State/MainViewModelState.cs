@@ -8,15 +8,12 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.State
 {
-    public class IdleState : MainViewModelState
+    public abstract class MainViewModelState : ViewModelState<MainViewModel>
     {
-        public IdleState(MainViewModel context) : base(context)
+        public MainViewModelState(MainViewModel context) : base(context)
         {
         }
 
-        public override void Exit(CancelEventArgs args)
-        {
-            ViewModelLocator.Cleanup();
-        }
+        public abstract void Exit(CancelEventArgs args);
     }
 }

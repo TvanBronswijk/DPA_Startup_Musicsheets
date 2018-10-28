@@ -12,8 +12,6 @@ namespace DPA_Musicsheets.State
             this.context = context;
         }
 
-        public abstract void exit(CancelEventArgs args);
-
         public override string ToString() => "";
     }
 }
