@@ -9,13 +9,13 @@ using System.Windows;
 
 namespace DPA_Musicsheets.State
 {
-    public class UnsavedState : ViewModelState<MainViewModel>
+    public class UnsavedState : MainViewModelState
     {
         public UnsavedState(MainViewModel context) : base(context)
         {
         }
 
-        public override void exit(CancelEventArgs args)
+        public override void Exit(CancelEventArgs args)
         {
             var result = MessageBox.Show("Are you sure you want to exit without saving?",
                 "warning",
